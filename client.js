@@ -1,24 +1,37 @@
 const net = require('net');
 
-const connect = function (){
-  // establish a connection with the game server
+const connect = function () {
   const conn = net.createConnection({
     host: 'localhost',
-    port: 50541    
+    port: '50541'
   });
 
-  conn.on('connect', () => {    
-    console.log('Successfully connected to game server')
-    conn.write(`Name: HEM`);
-   // conn.write(`Move: up`)
+  // interpret incoming data as text
+  conn.setEncoding("utf8");
+
+  conn.on('connect',()=> {
+    console.log(`connected to the server`);
+    conn.write('Name: HEM');
   })
 
-  conn.on('data', (data) => {
-    console.log(`Server says: ${data}`);
+  conn.on('close', (info) => {
+    console.log(`disconnected from the server`);
+    console.log(info);
   })
 
-  // interpret incoming data as text.
-  conn.setEncoding('utf8');
+  conn.on('data',(data) => {
+    console.log(`from the server: ${data}`);
+  })
+
   return conn;
-}
-module.exports = connect; 
+};
+
+
+/**
+ * "Move: up" - move up one square (unless facing down)
+"Move: down" - move down one square (unless facing up)
+"Move: left" - move left one square (unless facing right)
+"Move: right"
+ */
+
+module.exports= connect;
