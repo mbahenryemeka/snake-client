@@ -10,14 +10,25 @@ const connect = function () {
   conn.setEncoding("utf8");
 
   conn.on('connect',()=> {
+    /*setTimeout(() => {
+      conn.write('Move: up');
+      setTimeout(() => {
+        conn.write('Move: left');
+        setTimeout(() => {
+          conn.write('Move: down');
+        },4000)
+      },4000)
+    },2000)*/
+    
     console.log(`connected to the server`);
     conn.write('Name: HEM');
+    
   })
 
-  conn.on('close', (info) => {
-    console.log(`disconnected from the server`);
-    console.log(info);
-  })
+  //conn.on('close', (info) => {
+    //console.log(`disconnected from the server`);
+   // console.log(info);
+  //})
 
   conn.on('data',(data) => {
     console.log(`from the server: ${data}`);
@@ -25,13 +36,5 @@ const connect = function () {
 
   return conn;
 };
-
-
-/**
- * "Move: up" - move up one square (unless facing down)
-"Move: down" - move down one square (unless facing up)
-"Move: left" - move left one square (unless facing right)
-"Move: right"
- */
 
 module.exports= connect;
